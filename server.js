@@ -13,6 +13,21 @@ const io = socketIO(server, {
   },
 });
 
+
+io.use((socket,next)=>{
+  const token ="any token "
+  if(!token){
+    const error=new Error("authorize")                          //middleware
+    error.data={content:"any error"}
+    next(error)
+  }
+})
+
+
+
+
+
+
 io.on("connection", (socket) => {
   console.log("✅ New client connected");
 

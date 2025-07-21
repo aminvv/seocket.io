@@ -13,16 +13,9 @@ const io = socketIO(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("🟢  show query" );
-  console.log(socket.handshake.query)
-  console.log("🟢  show header" );
-  console.log(socket.handshake.headers['authorization'])//چون کلابنت از طریق مرورگر اجرا مبشه این اجازرو مرورگر نمیده  بهتره از کويری استفاده کرده
-  console.log("🟢 New client connected:", socket.id);
-  socket.on("clientMessage", data => {
-    console.log("📩 From client:", data);
-  });
-  socket.emit("serverMessage", "hello client");
-  io.emit("broadcast", "hello everyone");
+  socket.on("clientMessage", (data) => {
+    io.emit("serverMessage", data)
+  })
 });
 
 

@@ -13,10 +13,6 @@ const io = socketIO(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("🟢  show query" );
-  console.log(socket.handshake.query)
-  console.log("🟢  show header" );
-  console.log(socket.handshake.headers['authorization'])//چون کلابنت از طریق مرورگر اجرا مبشه این اجازرو مرورگر نمیده  بهتره از کويری استفاده کرده
   console.log("🟢 New client connected:", socket.id);
   socket.on("clientMessage", data => {
     console.log("📩 From client:", data);
@@ -25,7 +21,20 @@ io.on("connection", (socket) => {
   io.emit("broadcast", "hello everyone");
 });
 
+io.of("/student").on("connection", (socket) => {
+  console.log("🟢 New client connected student:", socket.id);
+  socket.on("clientMessage", data => {
+    console.log("📩 From client student:", data);
+  });
+  socket.emit("messageSocketStudent", "hello client student");
+});
 
-
+io.of("/teacher").on("connection", (socket) => {
+  console.log("🟢 New client connected teacher:", socket.id);
+  socket.on("clientMessage", data => {
+    console.log("📩 From client teacher:", data);
+  });
+  socket.emit("messageSocketTeacher", "hello teacher");
+});
 
 server.listen(3000, () => console.log("🚀 Server running on port 3000"));
